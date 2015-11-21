@@ -13,18 +13,22 @@
 
 ActiveRecord::Schema.define(version: 20150701031146) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "categories", force: :cascade do |t|
     t.string   "name"
+    t.string   "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "clue_groups", force: :cascade do |t|
     t.integer  "category_id"
+    t.integer  "jeopardy_game_id"
     t.string   "round"
-    t.integer  "year"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "clues", force: :cascade do |t|
@@ -41,6 +45,12 @@ ActiveRecord::Schema.define(version: 20150701031146) do
     t.string   "double_jeopardy_clue_groups"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+  end
+
+  create_table "jeopardy_games", force: :cascade do |t|
+    t.date     "gamedate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

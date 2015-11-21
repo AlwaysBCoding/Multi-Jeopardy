@@ -1,12 +1,6 @@
-    # Multi-Jeopardy
+# Multi-Jeopardy
 
-This is a readme
-
-
-this is nate.
-
-Tim's edit
-
-This is michael
-
-AND JORDAN!!!
+# How to start the game
+1/ Import questions
+2/ Start Game Server
+3/ Start Ngrok Tunnel
