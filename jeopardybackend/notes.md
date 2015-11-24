@@ -9,7 +9,7 @@
 ### Game Loop
 - Choose question
 (Admin selects question)
-- Show Question
+- Read Question
 (Admin makes question active)
 - Question Active
 (Buzz in)
@@ -21,7 +21,7 @@
 ### Game Loop
 - Choose question
 (Admin selects question)
-- Show Question
+- Read Question
 (Admin makes question active)
 - Question Active
 (Buzz in)
