@@ -1,7 +1,160 @@
 $(function() {
   if($("body").hasClass("games-board")) {
 
-    var gameStateRef = new Firebase("https://leighjeopardy.firebaseio.com/games/" + window.location.pathname.split("/")[2])
+    // var gameStateRef = new Firebase("https://leighjeopardy.firebaseio.com/games/" + window.location.pathname.split("/")[2])
+    var mockGameState = {
+      phase: "choose-question",
+      activeClue: {
+        status: "current",
+        pointValue: 200,
+        questionText: "",
+        answerText: ""
+      },
+      board: {
+        categories: {
+          a: {text: "THE NFL (2013)"},
+          b: {text: "STUPID ANSWERS (2006)"},
+          c: {text: "FANTASTIC FILMS (1990)"},
+          d: {text: "SNOWY SONGS (2004)"},
+          e: {text: "FOODS OF THE WORLD (1993)"},
+          f: {text: "BUSINESS & THE MARKET (2014)"}
+        },
+        clues: {
+          a: {
+            a: {
+              status: "unopened",
+              pointValue: 200
+            },
+            b: {
+              status: "unopened",
+              pointValue: 400
+            },
+            c: {
+              status: "unopened",
+              pointValue: 600
+            },
+            d: {
+              status: "unopenend",
+              pointValue: 800
+            },
+            e: {
+              status: "unopened",
+              pointValue: 1000
+            }
+          },
+          b: {
+            a: {
+              status: "unopened",
+              pointValue: 200
+            },
+            b: {
+              status: "unopened",
+              pointValue: 400
+            },
+            c: {
+              status: "unopened",
+              pointValue: 600
+            },
+            d: {
+              status: "unopenend",
+              pointValue: 800
+            },
+            e: {
+              status: "unopened",
+              pointValue: 1000
+            }
+          },
+          c: {
+            a: {
+              status: "unopened",
+              pointValue: 200
+            },
+            b: {
+              status: "unopened",
+              pointValue: 400
+            },
+            c: {
+              status: "unopened",
+              pointValue: 600
+            },
+            d: {
+              status: "unopenend",
+              pointValue: 800
+            },
+            e: {
+              status: "unopened",
+              pointValue: 1000
+            }
+          },
+          d: {
+            a: {
+              status: "unopened",
+              pointValue: 200
+            },
+            b: {
+              status: "unopened",
+              pointValue: 400
+            },
+            c: {
+              status: "unopened",
+              pointValue: 600
+            },
+            d: {
+              status: "unopenend",
+              pointValue: 800
+            },
+            e: {
+              status: "unopened",
+              pointValue: 1000
+            }
+          },
+          e: {
+            a: {
+              status: "unopened",
+              pointValue: 200
+            },
+            b: {
+              status: "unopened",
+              pointValue: 400
+            },
+            c: {
+              status: "unopened",
+              pointValue: 600
+            },
+            d: {
+              status: "unopenend",
+              pointValue: 800
+            },
+            e: {
+              status: "unopened",
+              pointValue: 1000
+            }
+          },
+          f: {
+            a: {
+              status: "unopened",
+              pointValue: 200
+            },
+            b: {
+              status: "unopened",
+              pointValue: 400
+            },
+            c: {
+              status: "unopened",
+              pointValue: 600
+            },
+            d: {
+              status: "unopenend",
+              pointValue: 800
+            },
+            e: {
+              status: "unopened",
+              pointValue: 1000
+            }
+          }
+        }
+      }
+    }
 
     // Player
     var Player = React.createClass({
@@ -25,9 +178,13 @@ $(function() {
       render: function() {
         switch(this.props.status) {
           case "inprogress":
-            return React.createElement("th", {className: "category"}, this.props.text)
+            return React.createElement("div", {className: "category"},
+              React.createElement("p", {}, this.props.text)
+            )
           case "completed":
-            return React.createElement("th", {className: "category"}, "")
+            return React.createElement("div", {className: "category"},
+              React.createElement("p", {}, this.props.text)
+            )
         }
       }
     })
@@ -40,11 +197,13 @@ $(function() {
 
       render: function() {
         switch(this.props.status) {
-          case "ready":
-            return React.createElement("td", {className: "clue-value"}, `$${this.props.pointValue}`)
+          case "unopened":
+            return React.createElement("div", {className: "clue"},
+              React.createElement("p", {}, `$${this.props.pointValue}`)
+            )
           case "current":
             return React.createElement("td", {}, this.props.questionText)
-          case "answered":
+          case "completed":
             return React.createElement("td", {}, "")
         }
       }
@@ -56,57 +215,125 @@ $(function() {
       // clues
 
       render: function() {
-        return React.createElement("table", {},
-          React.createElement("thead", {},
-            React.createElement("tr", {},
-              React.createElement(Category, {status: "inprogress", text: "Some Cat"}),
-              React.createElement(Category, {status: "inprogress", text: "Some Cat"}),
-              React.createElement(Category, {status: "inprogress", text: "Some Cat"}),
-              React.createElement(Category, {status: "inprogress", text: "Some Cat"}),
-              React.createElement(Category, {status: "inprogress", text: "Some Cat"}),
-              React.createElement(Category, {status: "inprogress", text: "Some Cat"})
+        return React.createElement("div", {className: "game-board"},
+          React.createElement("div", {className: "column"},
+            React.createElement("div", {className: "row"},
+              React.createElement(Category, {text: mockGameState.board.categories.a.text, status: "inprogress"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.a.a.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.a.b.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.a.c.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.a.d.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.a.e.pointValue, status: "unopened"})
             )
           ),
-          React.createElement("tbody", {},
-            React.createElement("tr", {},
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200})
+          React.createElement("div", {className: "column"},
+            React.createElement("div", {className: "row"},
+              React.createElement(Category, {text: mockGameState.board.categories.b.text, status: "inprogress"})
             ),
-            React.createElement("tr", {},
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200})
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.b.a.pointValue, status: "unopened"})
             ),
-            React.createElement("tr", {},
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200})
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.b.b.pointValue, status: "unopened"})
             ),
-            React.createElement("tr", {},
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200})
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.b.c.pointValue, status: "unopened"})
             ),
-            React.createElement("tr", {},
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200}),
-              React.createElement(Clue, {status: "ready", pointValue: 200})
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.b.d.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.b.e.pointValue, status: "unopened"})
+            )
+          ),
+          React.createElement("div", {className: "column"},
+            React.createElement("div", {className: "row"},
+              React.createElement(Category, {text: mockGameState.board.categories.c.text, status: "inprogress"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.c.a.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.c.b.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.c.c.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.c.d.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.c.e.pointValue, status: "unopened"})
+            )
+          ),
+          React.createElement("div", {className: "column"},
+            React.createElement("div", {className: "row"},
+              React.createElement(Category, {text: mockGameState.board.categories.d.text, status: "inprogress"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.d.a.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.d.b.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.d.c.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.d.d.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.d.e.pointValue, status: "unopened"})
+            )
+          ),
+          React.createElement("div", {className: "column"},
+            React.createElement("div", {className: "row"},
+              React.createElement(Category, {text: mockGameState.board.categories.e.text, status: "inprogress"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.e.a.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.e.b.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.e.c.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.e.d.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.e.e.pointValue, status: "unopened"})
+            )
+          ),
+          React.createElement("div", {className: "column"},
+            React.createElement("div", {className: "row"},
+              React.createElement(Category, {text: mockGameState.board.categories.f.text, status: "inprogress"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.f.a.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.f.b.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.f.c.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.f.d.pointValue, status: "unopened"})
+            ),
+            React.createElement("div", {className: "row"},
+              React.createElement(Clue, {pointValue: mockGameState.board.clues.f.e.pointValue, status: "unopened"})
             )
           )
         )
@@ -130,9 +357,11 @@ $(function() {
 
       componentWillMount: function() {
         renderContext = this
-        gameStateRef.on("value", function(snapshot) {
-          renderContext.setState(snapshot.val())
-        })
+        // gameStateRef.on("value", function(snapshot) {
+        //   renderContext.setState(snapshot.val())
+        // })
+
+        renderContext.setState(mockGameState)
       },
 
       render: function() {
@@ -140,8 +369,8 @@ $(function() {
         var MainContent
 
         ConnectedPlayers = React.createElement("div", {className: "connected-players"},
-          React.createElement(Player, {display: "Team Couch", score: 11800}),
-          React.createElement(Player, {display: "Team Floor", score: 9500})
+          React.createElement(Player, {display: "Player 1", score: 0}),
+          React.createElement(Player, {display: "Player 2", score: 0})
         )
 
         switch(this.state.phase) {
@@ -160,6 +389,9 @@ $(function() {
         case "choose-question":
           MainContent =
           React.createElement(Board, {categories: this.state.board.categories, clues: this.state.board.clues})
+        case "show-question":
+          MainContent =
+          React.createElement(Clue, {})
         }
 
         return React.createElement("div", {className: "container"},

@@ -4,7 +4,7 @@
     %meta{content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %title Jeopardybackend
     = stylesheet_link_tag 'application', media: 'all'
-    %script{src: "https://cdn.firebase.com/js/client/2.2.7/firebase.js"}
+    -# %script{src: "https://cdn.firebase.com/js/client/2.2.7/firebase.js"}
     = javascript_include_tag 'application'
     = csrf_meta_tags
   %body{class: "#{controller.controller_name.to_s}-#{controller.action_name.to_s}"}
