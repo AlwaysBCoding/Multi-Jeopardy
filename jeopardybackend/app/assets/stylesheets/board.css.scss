@@ -1,41 +1,118 @@
+// Shared
 $jeopardy-blue: #060CE9;
+$swish-dark-gray: #1B2226;
+$swish-primary-text: rgba(255,255,255,0.87);
+$swish-orange: rgba(255,162,115,1);
 
-.games-show {
+.flex-divider { flex: 1 }
+
+// Board
+.games-board {
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+
+    .waiting-for-players-container, .loading-container {
+      display: flex;
+      background-color: $jeopardy-blue;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+
+      .waiting-for-players-text, .loading-text {
+        font-family: "Korinna Bold";
+        font-size: 4.5rem;
+        font-weight: 600;
+        color: white;
+        text-align: center;
+        text-shadow: 4px 4px 3px #000; } }
+
+    .connected-players {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: 33%;
+      height: 100%;
+      background-color: $swish-dark-gray;
+      border-right: 10px solid black;
+
+      .player {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        padding-top: 2rem;
+        border-bottom: 2px solid $swish-orange;
+
+        .display {
+          margin-left: 1rem;
+          margin-bottom: 0px;
+          font-family: "Hand of Sean";
+          font-size: 3rem;
+          font-weight: 500;
+          color: $swish-primary-text;
+        }
+
+        .score {
+          margin-right: 1rem;
+          margin-left: 1rem;
+          margin-bottom: 0px;
+          font-family: "Swiss 911";
+          font-size: 5rem;
+          font-weight: 500;
+          color: $swish-primary-text;
+        }
+      }
+    }
+
+    .game-board {
+    }
+
+  }
+
   div.show-question {
     background-color: $jeopardy-blue;
   }
+
   tbody {
     background-color: $jeopardy-blue;
   }
-}
-
-.games-admin {
-  div.show-question {
-    background-color: red;
-  }
-  tbody {
-    background-color: red;
-  }
 
 }
 
-div.show-player {
-  background-color: red;
+table {
+  width: 100%;
   min-height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 8rem;
+  background-color: black;
+  font-family: arial;
+  text-align: center;
+  font-size: 1em;
+  text-transform: uppercase;
+  border: 5px solid black
+}
 
-  .player-name {
-    font-family: "Korinna Bold";
-    font-size: 4.5rem;
-    font-weight: 600;
-    color: white;
-    text-align: center;
-    text-shadow: 4px 4px 3px #000;
-  }
+th.category {
+  color: white;
+  background-color: blue;
+  border-radius: 10px;
+  border: 4px solid black;
+  font-size: 2em;
+  padding: 0.5rem;
+  text-align: center;
+  text-shadow: 4px 4px 3px #000;
+}
+
+td.clue-value {
+  font-family: "Swiss 911";
+  font-size: 5.5rem;
+  font-weight: 500;
+  color: gold;
+  text-shadow: 4px 4px 3px #000;
+  letter-spacing: 0.1rem;
 }
 
 div.show-question {
@@ -66,43 +143,6 @@ div.show-question {
   }
 }
 
-.container {
-  position: relative;
-  width: 100%;
-  min-height: 100%;
-}
-
-table {
-  width: 100%;
-  min-height: 100%;
-  background-color: black;
-  font-family: arial;
-  text-align: center;
-  font-size: 1em;
-  test-transform: uppercase;
-  border: 5px solid black
-}
-
-th {
-  color: white;
-  background-color: blue;
-  border-radius: 10px;
-  border: 4px solid black;
-  font-size: 2em;
-  padding: 0.5rem;
-  text-align: center;
-  text-shadow: 4px 4px 3px #000;
-}
-
-td.clue-value {
-  font-family: "Swiss 911";
-  font-size: 5.5rem;
-  font-weight: 500;
-  color: gold;
-  text-shadow: 4px 4px 3px #000;
-  letter-spacing: 0.1rem;
-}
-
 td {
   border: 4px solid black;
   border-radius: 7px;
@@ -111,6 +151,40 @@ td {
   0.40px -0.40px 0 #000,
   -0.40px 0.40px 0 #000,
   0.40px 0.40px 0 #000;
+}
+
+
+// Admin
+.games-admin {
+  div.show-question {
+    background-color: red;
+  }
+  tbody {
+    background-color: red;
+  }
+
+}
+
+// Player
+// ...
+
+div.show-player {
+  background-color: red;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 8rem;
+
+  .player-name {
+    font-family: "Korinna Bold";
+    font-size: 4.5rem;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    text-shadow: 4px 4px 3px #000;
+  }
 }
 
 .connected-players {

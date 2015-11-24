@@ -15,8 +15,6 @@ class Game < ActiveRecord::Base
   end
 
   def generate_initial_gamestate
-    # Phases...
-    # Waiting for Players
     # Game Start (transition)
     # Revealing Single Jeopardy Categories
     # Choose Question

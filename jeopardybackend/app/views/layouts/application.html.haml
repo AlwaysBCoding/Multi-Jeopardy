@@ -7,6 +7,5 @@
     %script{src: "https://cdn.firebase.com/js/client/2.2.7/firebase.js"}
     = javascript_include_tag 'application'
     = csrf_meta_tags
-  %body{class: "<haml_loud"}
-    "\#{controller.controller_name.to_s}-\#{controller.action_name.to_s}" &gt;
+  %body{class: "#{controller.controller_name.to_s}-#{controller.action_name.to_s}"}
     = yield

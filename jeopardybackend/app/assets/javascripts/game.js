@@ -137,7 +137,7 @@ if($("body").hasClass("games-show")) {
               React.createElement(clue, {clue: this.props.board.clue_f_5})
             )
           )
-        );
+        )
       } else {
         return React.createElement("p", {}, "LOADING...")
       }
