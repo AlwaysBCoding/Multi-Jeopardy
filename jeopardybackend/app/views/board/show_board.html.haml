@@ -1,0 +1,29 @@
+%input.username{:type => "text"}/
+%button.add-user Add User
+.connected-players.ui.list
+%table.ui.celled.striped.table
+  %thead
+    %tr
+      - @clue_groups.each do |clue_group|
+        %th= "#{clue_group.category.name} (#{clue_group.year})"
+  %tbody
+    %tr
+      - @clue_groups.each do |clue_group|
+        / <td><haml_loud> clue_group.clues.where(point_value: 200).first.question </haml_loud></td>
+        %td 200
+    %tr
+      - @clue_groups.each do |clue_group|
+        / <td><haml_loud> clue_group.clues.where(point_value: 400).first.question </haml_loud></td>
+        %td 400
+    %tr
+      - @clue_groups.each do |clue_group|
+        / <td><haml_loud> clue_group.clues.where(point_value: 600).first.question </haml_loud></td>
+        %td 600
+    %tr
+      - @clue_groups.each do |clue_group|
+        / <td><haml_loud> clue_group.clues.where(point_value: 800).first.question </haml_loud></td>
+        %td 800
+    %tr
+      - @clue_groups.each do |clue_group|
+        / <td><haml_loud> clue_group.clues.where(point_value: 1000).first.question </haml_loud></td>
+        %td 1000

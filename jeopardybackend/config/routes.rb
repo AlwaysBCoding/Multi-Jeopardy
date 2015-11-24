@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
   get '/' => "pages#homepage", as: :homepage
-  # get '/' => 'games#index', as: :games_index
-  # post '/games' => 'games#create', as: :games_create
-  # get '/games/:id' => 'games#show', as: :game
-  # get '/games/:id/admin' => 'games#admin', as: :game_admin
-  # get '/board' => 'board#show_board'
+
+  get '/games/:slug/player' => "games#player", as: :game_player
+  get '/games/:slug/admin' => "games#admin", as: :game_admin
+  get '/games/:slug/board' => "games#board", as: :game_board
+
 end
+
+# Start Game,
+# Generate unique slug for game
+# Invite players link
+# Connect clients (ios device ID?)
+# Could you actually have an app for this?

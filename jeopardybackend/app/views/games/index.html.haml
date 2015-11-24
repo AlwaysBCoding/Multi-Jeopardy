@@ -1,0 +1,7 @@
+/
+  <h1>Hello from Games Index VIEW</h1>
+= link_to "Create a New Game", games_create_url, method: :post
+.items
+  - @games.each do |game|
+    .item
+      = link_to "Game: #{game.id}", game_url(game)

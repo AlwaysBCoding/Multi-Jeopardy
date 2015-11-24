@@ -1,6 +1,35 @@
 class Game < ActiveRecord::Base
 
+  validates :slug, uniqueness: true
+
+  before_create :generate_slug, :seed_clue_groups
   after_create :sync_to_firebase
+
+  def generate_slug
+    self.slug = SecureRandom.base64(6)
+  end
+
+  def seed_clue_groups
+    self.single_jeopardy_clue_groups = ClueGroup.where(round: "single").order("RANDOM()").first(6).map(&:id).join(",")
+    self.double_jeopardy_clue_groups = ClueGroup.where(round: "double").order("RANDOM()").first(6).map(&:id).join(",")
+  end
+
+  def generate_initial_gamestate
+    # Phases...
+    # Waiting for Players
+    # Game Start (transition)
+    # Revealing Single Jeopardy Categories
+    # Choose Question
+    # Read Question
+    # Answer Question
+    # End Single Jeopardy
+    # Revealing Double Jeopardy Categories
+    # Choose Question
+    # Read Question
+    # Answer Question
+    # End Double Jeopardy
+    {phase: "waiting-for-players"}
+  end
 
   def generate_game_state
     single_jeopardy_clue_groups = self.single_jeopardy_clue_groups.split(",").map { |id| ClueGroup.find(id) }
@@ -54,8 +83,8 @@ class Game < ActiveRecord::Base
   end
 
   def sync_to_firebase
-    firebase = Firebase::Client.new("https://dbc-jeopardy.firebaseio.com")
-    firebase.set("/games/#{self.id}", self.generate_game_state)
+    firebase = Firebase::Client.new("https://leighjeopardy.firebaseio.com")
+    firebase.set("/games/#{self.slug}", self.generate_initial_gamestate)
   end
 
 end

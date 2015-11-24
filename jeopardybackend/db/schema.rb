@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150701031146) do
+ActiveRecord::Schema.define(version: 20151124081015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,12 +45,15 @@ ActiveRecord::Schema.define(version: 20150701031146) do
     t.string   "double_jeopardy_clue_groups"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.string   "slug"
   end
 
   create_table "jeopardy_games", force: :cascade do |t|
     t.date     "gamedate"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "jarchive_id"
+    t.boolean  "game_exists"
   end
 
 end
