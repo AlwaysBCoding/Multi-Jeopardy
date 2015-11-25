@@ -75,8 +75,12 @@ body { margin: 0; }
         padding-bottom: 1.5rem;
         border-bottom: 2px solid $swish-orange;
 
-        &.buzz {
+        &.control {
           background-color: $swish-aqua;
+        }
+
+        &.buzz {
+          background-color: red;
         }
 
         .display {
@@ -226,8 +230,12 @@ body { margin: 0; }
         padding-bottom: 1.5rem;
         border-bottom: 2px solid $swish-orange;
 
-        &.buzz {
+        &.control {
           background-color: $swish-aqua;
+        }
+
+        &.buzz {
+          background-color: red;
         }
 
         .display {
@@ -346,4 +354,9 @@ body { margin: 0; }
 }
 
 // Player
-// ...
+.games-player {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: $jeopardy-blue;
+}

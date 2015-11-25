@@ -24,26 +24,20 @@ $(function() {
 
     // Player
     var Player = React.createClass({
-      // status
-      // display
+      // username
       // score
 
       componentWillMount: function() {
-        this.playerClasses = ""
-
-        switch(this.props.player.status) {
-          case "idle":
-            this.playerClasses += "player"
-            break
-          case "buzz":
-            this.playerClasses += "player buzz"
-            break
-        }
       },
 
       render: function() {
-        return React.createElement("div", {className: this.playerClasses},
-          React.createElement("p", {className: "display"}, this.props.player.display),
+        var playerClasses = ""
+        playerClasses += "player "
+        if(this.props.controlPlayer == this.props.player.key) { playerClasses += "control " }
+        if(this.props.buzzPlayer == this.props.player.key) { playerClasses += "buzz "}
+
+        return React.createElement("div", {className: playerClasses},
+          React.createElement("p", {className: "display"}, this.props.player.username),
           React.createElement("div", {className: "flex-divider"}),
           React.createElement("p", {className: "score"}, this.props.player.score)
         )
@@ -229,6 +223,7 @@ $(function() {
     // ActionButtons
     var ActionButtons = React.createClass({
       render: function() {
+        var renderContext = this
         var ActionButtonsContent
 
         switch(this.props.gameState.phase) {
@@ -256,7 +251,11 @@ $(function() {
                   ActionButtonsContent =
                     React.createElement("div", {
                       className: "action-button",
-                      onClick: (event) => { GAMESTATEREF.child("/phase").set("choose-question") }},
+                      onClick: (event) => {
+                        var nextPlayerControl = _.sample(renderContext.props.gameState.connectedPlayers)
+                        GAMESTATEREF.child("/phase").set("choose-question")
+                        GAMESTATEREF.child("/controlPlayer").set(nextPlayerControl.key)
+                      }},
                       React.createElement("p", {className: "action-button-text"}, "Start Game")
                     )
                 } else {
@@ -285,7 +284,9 @@ $(function() {
                   ActionButtonsContent =
                     React.createElement("div", {
                       className: "action-button",
-                      onClick: (event) => { GAMESTATEREF.child("/phase").set("choose-question") }},
+                      onClick: (event) => {
+                        GAMESTATEREF.child("/phase").set("choose-question")
+                      }},
                       React.createElement("p", {className: "action-button-text"}, "Start Game")
                     )
                 } else {
@@ -316,9 +317,6 @@ $(function() {
 
     // Game
     var Game = React.createClass({
-      // phase
-      // board
-
       getInitialState: function() {
         return {
           phase: "loading-data",
@@ -327,19 +325,20 @@ $(function() {
 
       componentWillMount: function() {
         renderContext = this
-        GAMESTATEREF.on("value", function(snapshot) {
-          renderContext.setState(snapshot.val())
-        })
+        GAMESTATEREF.on("value", (snapshot) => { renderContext.setState(snapshot.val()) })
       },
 
       render: function() {
+        var renderContext = this
         var ConnectedPlayers
         var MainContent
 
+        var moddedPlayers = _.map(this.state.connectedPlayers, (player, key) => { return Object.assign(player, {key: key}) })
+
         ConnectedPlayers =
          React.createElement("div", {className: "connected-players"},
-          _.map(_.sortBy(this.state.connectedPlayers, (player) => { return player.score }).reverse(), (player) => {
-            return React.createElement(Player, {player: player})
+          _.map(_.sortBy(moddedPlayers, (player) => { return player.score }).reverse(), (player) => {
+            return React.createElement(Player, {player: player, key: player.key, controlPlayer: renderContext.state.controlPlayer, buzzPlayer: renderContext.state.buzzPlayer})
           })
         )
 

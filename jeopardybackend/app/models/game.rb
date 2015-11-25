@@ -20,6 +20,8 @@ class Game < ActiveRecord::Base
 
     {
       connectedPlayers: [],
+      controlPlayer: "",
+      buzzedPlayer: "",
       round: "single",
       phase: "waiting-for-players",
       activeClue: {},
