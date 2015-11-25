@@ -232,6 +232,7 @@ $(function() {
         var ActionButtonsContent
 
         switch(this.props.gameState.phase) {
+
           case "waiting-for-players":
             ActionButtonsContent = [
               React.createElement("div", {
@@ -241,6 +242,7 @@ $(function() {
               )
             ]
             break
+
           case "reveal-categories":
             switch(this.props.gameState.round) {
               case "single":
@@ -273,7 +275,33 @@ $(function() {
                 break
 
               case "double":
-              break
+                var categories = [this.props.gameState.doubleJeopardy.categories.a,
+                                  this.props.gameState.doubleJeopardy.categories.b,
+                                  this.props.gameState.doubleJeopardy.categories.c,
+                                  this.props.gameState.doubleJeopardy.categories.d,
+                                  this.props.gameState.doubleJeopardy.categories.e,
+                                  this.props.gameState.doubleJeopardy.categories.f]
+                if(_.all(categories, (category) => { return category.status === "revealed" })) {
+                  ActionButtonsContent =
+                    React.createElement("div", {
+                      className: "action-button",
+                      onClick: (event) => { GAMESTATEREF.child("/phase").set("choose-question") }},
+                      React.createElement("p", {className: "action-button-text"}, "Start Game")
+                    )
+                } else {
+                  ActionButtonsContent =
+                    React.createElement("div", {
+                      className: "action-button",
+                      onClick: (event) => {
+                        var nextCategory = _.find(categories, (category) => { return category.status === "unrevealed" })
+                        var nextCategoryIndex = _.indexOf(categories, nextCategory)
+                        var categoryKey = indexToAlpha(nextCategoryIndex)
+                        GAMESTATEREF.child(`/doubleJeopardy/categories/${categoryKey}/status`).set("revealed")
+                       }},
+                      React.createElement("p", {className: "action-button-text"}, "Reveal Category")
+                    )
+                }
+                break
             }
             break
           default:
