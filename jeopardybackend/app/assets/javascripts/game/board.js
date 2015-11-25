@@ -248,6 +248,7 @@ $(function() {
             React.createElement("h1", {className: "waiting-for-players-text"}, "Waiting for Players")
           )
           break
+        case "reveal-categories":
         case "choose-question":
           switch(this.state.round) {
             case "single":

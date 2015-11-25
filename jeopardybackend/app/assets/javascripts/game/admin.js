@@ -1,7 +1,26 @@
 $(function() {
   if($("body").hasClass("games-admin")) {
 
-    var gameStateRef = new Firebase("https://leighjeopardy.firebaseio.com/games/" + window.location.pathname.split("/")[2])
+    // Globals
+    var GAMESTATEREF = new Firebase("https://leighjeopardy.firebaseio.com/games/" + window.location.pathname.split("/")[2])
+
+    // Helpers
+    var indexToAlpha = function(index) {
+      switch(index) {
+        case 0:
+          return "a"
+        case 1:
+          return "b"
+        case 2:
+          return "c"
+        case 3:
+          return "d"
+        case 4:
+          return "e"
+        case 5:
+          return "f"
+      }
+    }
 
     // Player
     var Player = React.createClass({
@@ -40,7 +59,8 @@ $(function() {
         switch(this.props.category.status) {
           case "revealed":
             return React.createElement("div", {className: "category"},
-              React.createElement("p", {className: "category-text"}, this.props.category.text)
+              React.createElement("p", {className: "category-text"}, this.props.category.text),
+              React.createElement("p", {className: "category-comment"}, this.props.category.comments)
             )
           case "unrevealed":
           case "completed":
@@ -206,6 +226,66 @@ $(function() {
       }
     })
 
+    // ActionButtons
+    var ActionButtons = React.createClass({
+      render: function() {
+        var ActionButtonsContent
+
+        switch(this.props.gameState.phase) {
+          case "waiting-for-players":
+            ActionButtonsContent = [
+              React.createElement("div", {
+                className: "action-button",
+                onClick: (event) => { GAMESTATEREF.child("/phase").set("reveal-categories") }},
+                React.createElement("p", {className: "action-button-text"}, "Start Game")
+              )
+            ]
+            break
+          case "reveal-categories":
+            switch(this.props.gameState.round) {
+              case "single":
+                var categories = [this.props.gameState.singleJeopardy.categories.a,
+                                  this.props.gameState.singleJeopardy.categories.b,
+                                  this.props.gameState.singleJeopardy.categories.c,
+                                  this.props.gameState.singleJeopardy.categories.d,
+                                  this.props.gameState.singleJeopardy.categories.e,
+                                  this.props.gameState.singleJeopardy.categories.f]
+                if(_.all(categories, (category) => { return category.status === "revealed" })) {
+                  ActionButtonsContent =
+                    React.createElement("div", {
+                      className: "action-button",
+                      onClick: (event) => { GAMESTATEREF.child("/phase").set("choose-question") }},
+                      React.createElement("p", {className: "action-button-text"}, "Start Game")
+                    )
+                } else {
+                  ActionButtonsContent =
+                    React.createElement("div", {
+                      className: "action-button",
+                      onClick: (event) => {
+                        var nextCategory = _.find(categories, (category) => { return category.status === "unrevealed" })
+                        var nextCategoryIndex = _.indexOf(categories, nextCategory)
+                        var categoryKey = indexToAlpha(nextCategoryIndex)
+                        GAMESTATEREF.child(`/singleJeopardy/categories/${categoryKey}/status`).set("revealed")
+                       }},
+                      React.createElement("p", {className: "action-button-text"}, "Reveal Category")
+                    )
+                }
+                break
+
+              case "double":
+              break
+            }
+            break
+          default:
+            return React.createElement("div", {className: "action-buttons"})
+        }
+
+        return React.createElement("div", {className: "action-buttons"},
+          ActionButtonsContent
+        )
+      }
+    })
+
     // Game
     var Game = React.createClass({
       // phase
@@ -219,7 +299,7 @@ $(function() {
 
       componentWillMount: function() {
         renderContext = this
-        gameStateRef.on("value", function(snapshot) {
+        GAMESTATEREF.on("value", function(snapshot) {
           renderContext.setState(snapshot.val())
         })
       },
@@ -248,6 +328,7 @@ $(function() {
             React.createElement("h1", {className: "waiting-for-players-text"}, "Waiting for Players")
           )
           break
+        case "reveal-categories":
         case "choose-question":
           switch(this.state.round) {
             case "single":
@@ -266,7 +347,8 @@ $(function() {
 
         return React.createElement("div", {className: "container"},
           ConnectedPlayers,
-          MainContent
+          MainContent,
+          React.createElement(ActionButtons, {gameState: this.state})
         )
 
       }
