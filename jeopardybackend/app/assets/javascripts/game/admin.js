@@ -72,9 +72,24 @@ $(function() {
       // questionText
 
       render: function() {
+        var renderContext = this
+
+        var clueClasses = ""
+        clueClasses += "clue "
+        if(this.props.phase == "choose-question") { clueClasses += "available" }
+
         switch(this.props.clue.status) {
           case "unopened":
-            return React.createElement("div", {className: "clue"},
+            return React.createElement("div", {
+              className: clueClasses,
+              onClick: (event) => {
+                if(renderContext.props.phase == "choose-question") {
+                  GAMESTATEREF.child(`${renderContext.props.round}Jeopardy/clues/${renderContext.props.clueKey}/status`).set("current")
+                  GAMESTATEREF.child("/activeClue").set(Object.assign(this.props.clue, {"status": "current"}))
+                  GAMESTATEREF.child("/phase").set("read-question")
+                }
+              }
+            },
               React.createElement("p", {className: "point-value"}, `$${this.props.clue.pointValue}`)
             )
           case "current":
@@ -101,19 +116,19 @@ $(function() {
               React.createElement(Category, {category: this.props.board.categories.a})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.a.a})
+              React.createElement(Clue, {clue: this.props.board.clues.a.a, clueKey: "a/a", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.a.b})
+              React.createElement(Clue, {clue: this.props.board.clues.a.b, clueKey: "a/b", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.a.c})
+              React.createElement(Clue, {clue: this.props.board.clues.a.c, clueKey: "a/c", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.a.d})
+              React.createElement(Clue, {clue: this.props.board.clues.a.d, clueKey: "a/d", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.a.e})
+              React.createElement(Clue, {clue: this.props.board.clues.a.e, clueKey: "a/e", phase: this.props.phase, round: this.props.round})
             )
           ),
           React.createElement("div", {className: "column"},
@@ -121,19 +136,19 @@ $(function() {
               React.createElement(Category, {category: this.props.board.categories.b})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.b.a})
+              React.createElement(Clue, {clue: this.props.board.clues.b.a, clueKey: "b/a", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.b.b})
+              React.createElement(Clue, {clue: this.props.board.clues.b.b, clueKey: "b/b", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.b.c})
+              React.createElement(Clue, {clue: this.props.board.clues.b.c, clueKey: "b/c", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.b.d})
+              React.createElement(Clue, {clue: this.props.board.clues.b.d, clueKey: "b/d", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.b.e})
+              React.createElement(Clue, {clue: this.props.board.clues.b.e, clueKey: "b/e", phase: this.props.phase, round: this.props.round})
             )
           ),
           React.createElement("div", {className: "column"},
@@ -141,19 +156,19 @@ $(function() {
               React.createElement(Category, {category: this.props.board.categories.c})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.c.a})
+              React.createElement(Clue, {clue: this.props.board.clues.c.a, clueKey: "c/a", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.c.b})
+              React.createElement(Clue, {clue: this.props.board.clues.c.b, clueKey: "c/b", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.c.c})
+              React.createElement(Clue, {clue: this.props.board.clues.c.c, clueKey: "c/c", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.c.d})
+              React.createElement(Clue, {clue: this.props.board.clues.c.d, clueKey: "c/d", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.c.e})
+              React.createElement(Clue, {clue: this.props.board.clues.c.e, clueKey: "c/e", phase: this.props.phase, round: this.props.round})
             )
           ),
           React.createElement("div", {className: "column"},
@@ -161,19 +176,19 @@ $(function() {
               React.createElement(Category, {category: this.props.board.categories.d})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.d.a})
+              React.createElement(Clue, {clue: this.props.board.clues.d.a, clueKey: "d/a", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.d.b})
+              React.createElement(Clue, {clue: this.props.board.clues.d.b, clueKey: "d/b", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.d.c})
+              React.createElement(Clue, {clue: this.props.board.clues.d.c, clueKey: "d/c", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.d.d})
+              React.createElement(Clue, {clue: this.props.board.clues.d.d, clueKey: "d/d", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.d.e})
+              React.createElement(Clue, {clue: this.props.board.clues.d.e, clueKey: "d/e", phase: this.props.phase, round: this.props.round})
             )
           ),
           React.createElement("div", {className: "column"},
@@ -181,19 +196,19 @@ $(function() {
               React.createElement(Category, {category: this.props.board.categories.e})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.e.a})
+              React.createElement(Clue, {clue: this.props.board.clues.e.a, clueKey: "e/a", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.e.b})
+              React.createElement(Clue, {clue: this.props.board.clues.e.b, clueKey: "e/b", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.e.c})
+              React.createElement(Clue, {clue: this.props.board.clues.e.c, clueKey: "e/c", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.e.d})
+              React.createElement(Clue, {clue: this.props.board.clues.e.d, clueKey: "e/d", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.e.e})
+              React.createElement(Clue, {clue: this.props.board.clues.e.e, clueKey: "e/e", phase: this.props.phase, round: this.props.round})
             )
           ),
           React.createElement("div", {className: "column"},
@@ -201,19 +216,19 @@ $(function() {
               React.createElement(Category, {category: this.props.board.categories.f})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.f.a})
+              React.createElement(Clue, {clue: this.props.board.clues.f.a, clueKey: "f/a", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.f.b})
+              React.createElement(Clue, {clue: this.props.board.clues.f.b, clueKey: "f/b", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.f.c})
+              React.createElement(Clue, {clue: this.props.board.clues.f.c, clueKey: "f/c", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.f.d})
+              React.createElement(Clue, {clue: this.props.board.clues.f.d, clueKey: "f/d", phase: this.props.phase, round: this.props.round})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, {clue: this.props.board.clues.f.e})
+              React.createElement(Clue, {clue: this.props.board.clues.f.e, clueKey: "f/e", phase: this.props.phase, round: this.props.round})
             )
           )
         )
@@ -359,10 +374,10 @@ $(function() {
         case "choose-question":
           switch(this.state.round) {
             case "single":
-              MainContent = React.createElement(Board, {board: this.state.singleJeopardy})
+              MainContent = React.createElement(Board, {board: this.state.singleJeopardy, phase: this.state.phase, round: this.state.round})
               break
             case "double":
-              MainContent = React.createElement(Board, {board: this.state.doubleJeopardy})
+              MainContent = React.createElement(Board, {board: this.state.doubleJeopardy, phase: this.state.phase, round: this.state.round})
               break
           }
           break

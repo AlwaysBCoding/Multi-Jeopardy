@@ -309,6 +309,10 @@ body { margin: 0; }
             justify-content: center;
             align-items: center;
 
+            &.available {
+              cursor: pointer;
+            }
+
             p.point-value {
               font-family: "Swiss 911";
               font-size: 4rem;

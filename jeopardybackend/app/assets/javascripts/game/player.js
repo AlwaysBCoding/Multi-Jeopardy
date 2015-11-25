@@ -15,7 +15,6 @@ $(function() {
       },
 
       render: function() {
-        GAMESTATEREF.child(`/connectedPlayers/${this.userRef.key()}/score`).set(750)
         return React.createElement("h1", {}, this.username)
       }
 

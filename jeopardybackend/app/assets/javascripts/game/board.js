@@ -52,9 +52,12 @@ $(function() {
       // questionText
 
       render: function() {
+        var clueClasses = ""
+        clueClasses += "clue "
+
         switch(this.props.clue.status) {
           case "unopened":
-            return React.createElement("div", {className: "clue"},
+            return React.createElement("div", {className: clueClasses},
               React.createElement("p", {className: "point-value"}, `$${this.props.clue.pointValue}`)
             )
           case "current":
