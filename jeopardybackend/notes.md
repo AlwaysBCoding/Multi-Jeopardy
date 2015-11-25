@@ -6,23 +6,11 @@
 - Reveal Single Jeopardy Categories
 (go to next category)
 
-### Game Loop
-- Choose question
-(Admin selects question)
-- Read Question
-(Admin makes question active)
-- Question Active
-(Buzz in)
-(Answer Correct)
-
 - Reveal Double Jeopardy Categories
 (go to next category)
 
 ### Game Loop
-- Choose question
-(Admin selects question)
-- Read Question
-(Admin makes question active)
-- Question Active
-(Buzz in)
-(Answer Correct)
+choose-question
+read-question
+active-question
+buzzed-question
