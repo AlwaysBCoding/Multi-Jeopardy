@@ -10,7 +10,7 @@ $swish-aqua: rgba(79,227,195,1);
 body { margin: 0; }
 
 // Board
-.games-board {
+.games-board, .games-admin {
 
   // Only when a direct child of container
   .container > div.clue {
@@ -155,55 +155,11 @@ body { margin: 0; }
         }
       }
     }
-
-  }
-
-  div.show-question {
-    background-color: $jeopardy-blue;
-  }
-
-  tbody {
-    background-color: $jeopardy-blue;
-  }
-
-}
-
-div.show-question {
-  min-height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 8rem;
-  cursor: pointer;
-
-  .question-text {
-    font-family: "Korinna Bold";
-    font-size: 4.5rem;
-    font-weight: 600;
-    color: white;
-    text-align: center;
-    text-shadow: 4px 4px 3px #000;
-  }
-
-  .answer-text {
-    font-family: "Korinna Bold";
-    font-size: 4rem;
-    font-weight: 600;
-    color: skyblue;
-    text-align: center;
-    text-shadow: 2px 2px 2px #000;
   }
 }
 
 // Admin
 .games-admin {
-  div.show-question {
-    background-color: red;
-  }
-  tbody {
-    background-color: red;
-  }
 
 }
 

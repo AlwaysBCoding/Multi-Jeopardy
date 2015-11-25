@@ -93,13 +93,13 @@ $(function() {
               React.createElement(Clue, {clue: this.props.board.clues.a.b})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, clue: this.props.board.clues.a.c})
+              React.createElement(Clue, {clue: this.props.board.clues.a.c})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, clue: this.props.board.clues.a.d})
+              React.createElement(Clue, {clue: this.props.board.clues.a.d})
             ),
             React.createElement("div", {className: "row"},
-              React.createElement(Clue, clue: this.props.board.clues.a.e})
+              React.createElement(Clue, {clue: this.props.board.clues.a.e})
             )
           ),
           React.createElement("div", {className: "column"},
@@ -249,8 +249,14 @@ $(function() {
           )
           break
         case "choose-question":
-          MainContent =
-          React.createElement(Board, {board: this.state.board})
+          switch(this.state.round) {
+            case "single":
+              MainContent = React.createElement(Board, {board: this.state.singleJeopardy})
+              break
+            case "double":
+              MainContent = React.createElement(Board, {board: this.state.doubleJeopardy})
+              break
+          }
           break
         case "read-question":
           MainContent =
