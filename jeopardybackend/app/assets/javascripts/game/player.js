@@ -5,15 +5,32 @@ $(function() {
 
     var Buzzer = React.createClass({
 
+      componentWillMount: function() {
+        this.throttledBuzzIn = _.throttle(this.buzzIn, 500)
+      },
+
+      buzzIn: function() {
+        GAMESTATEREF.child("/buzzes").push({playerKey: this.props.playerKey})
+      },
+
+      handleBuzz: function(event) {
+        if(this.props.gameState.phase == "buzzers-active") {
+          this.throttledBuzzIn()
+        }
+      },
+
       render: function() {
         var classNames = ""
         classNames += "buzzer "
         switch(this.props.gameState.phase) {
+          case "buzzers-active":
+            classNames += "active "
+            break
           default:
             classNames += "inactive "
         }
 
-        return React.createElement("div", {className: classNames},
+        return React.createElement("div", {className: classNames, onClick: this.handleBuzz},
           React.createElement("p", {className: "buzzer-text"}, "BUZZER")
         )
 
@@ -39,7 +56,7 @@ $(function() {
             React.createElement("p", {className: "username-text"}, this.username)
           )
           SecondaryContent =
-          React.createElement(Buzzer, {gameState: this.state})
+          React.createElement(Buzzer, {gameState: this.state, playerKey: this.userRef.key()})
         } else {
           MainContent =
           React.createElement("div", {

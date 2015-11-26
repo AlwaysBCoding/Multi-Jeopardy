@@ -24,9 +24,6 @@ $(function() {
 
     // Player
     var Player = React.createClass({
-      // username
-      // score
-
       componentWillMount: function() {
       },
 
@@ -46,9 +43,6 @@ $(function() {
 
     // Category
     var Category = React.createClass({
-      // text
-      // status
-
       render: function() {
         switch(this.props.category.status) {
           case "revealed":
@@ -67,10 +61,6 @@ $(function() {
 
     // Clue
     var Clue = React.createClass({
-      // status
-      // pointValue
-      // questionText
-
       render: function() {
         var renderContext = this
 
@@ -94,15 +84,12 @@ $(function() {
               React.createElement("p", {className: "point-value"}, `$${this.props.clue.pointValue}`)
             )
           case "current":
-            if(this.props.phase == "read-question") {
-              return React.createElement("div", {className: clueClasses},
-                React.createElement("p", {className: "question-text"}, this.props.clue.questionText)
-              )
-            } else if(this.props.phase == "buzzers-active") {
-              return React.createElement("div", {className: clueClasses},
-                React.createElement("p", {className: "question-text"}, this.props.clue.answerText)
-              )
-            }
+            return React.createElement("div", {className: clueClasses},
+              React.createElement("p", {className: "question-text"}, this.props.clue.questionText)
+            )
+            // return React.createElement("div", {className: clueClasses},
+            //   React.createElement("p", {className: "question-text"}, this.props.clue.answerText)
+            // )
           case "completed":
             return React.createElement("div", {className: "clue"},
               React.createElement("p", {className: "point-value"}, "")
@@ -113,9 +100,6 @@ $(function() {
 
     // Board
     var Board = React.createClass({
-      // categories
-      // clues
-
       render: function() {
         return React.createElement("div", {className: "game-board"},
           React.createElement("div", {className: "column"},
@@ -345,7 +329,7 @@ $(function() {
                 className: "action-button",
                 onClick: (event) => {
                   GAMESTATEREF.child("/phase").set("choose-question")
-                  GAMESTATEREF.child(`/doubleJeopardy/clues/${renderContext.props.gameState.activeClue.clueKey}/status`).set("completed")
+                  GAMESTATEREF.child(`/singleJeopardy/clues/${renderContext.props.gameState.activeClue.clueKey}/status`).set("completed")
                 }},
                 React.createElement("p", {className: "action-button-text"}, "Back To Board")
               )
@@ -384,7 +368,7 @@ $(function() {
         ConnectedPlayers =
          React.createElement("div", {className: "connected-players"},
           _.map(_.sortBy(moddedPlayers, (player) => { return player.score }).reverse(), (player) => {
-            return React.createElement(Player, {player: player, key: player.key, controlPlayer: renderContext.state.controlPlayer, buzzPlayer: renderContext.state.buzzPlayer})
+            return React.createElement(Player, {player: player, key: player.key, controlPlayer: renderContext.state.controlPlayer, buzzPlayer: _.first(_.map(renderContext.state.buzzes, (value) => { return value.playerKey }))})
           })
         )
 
