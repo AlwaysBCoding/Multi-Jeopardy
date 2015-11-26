@@ -329,20 +329,39 @@ $(function() {
               ActionButtonsContent = [
                 React.createElement("div", {
                   className: "action-button",
+                  key: "correct",
                   onClick: (event) => {
+                    var playerKey = _.first(_.map(renderContext.props.gameState.buzzes, (player) => { return player.playerKey }))
+                    var playerScore = renderContext.props.gameState.connectedPlayers[playerKey]["score"]
+                    var pointValue = renderContext.props.gameState.activeClue.pointValue
+
+                    GAMESTATEREF.child(`/connectedPlayers/${playerKey}/score`).set(playerScore + pointValue)
+                    GAMESTATEREF.child('/controlPlayer').set(playerKey)
+                    GAMESTATEREF.child(`/${renderContext.props.gameState.round}Jeopardy/clues/${renderContext.props.gameState.activeClue.clueKey}/status`).set("completed")
+                    GAMESTATEREF.child("/buzzes").remove()
+                    GAMESTATEREF.child("/phase").set("choose-question")
 
                   }},
                   React.createElement("p", {className: "action-button-text"}, "Correct"))
                 ,
                 React.createElement("div", {
                   className: "action-button",
+                  key: "wrong",
                   onClick: (event) => {
+
+                    var playerKey = _.first(_.map(renderContext.props.gameState.buzzes, (player) => { return player.playerKey }))
+                    var playerScore = renderContext.props.gameState.connectedPlayers[playerKey]["score"]
+                    var pointValue = renderContext.props.gameState.activeClue.pointValue
+
+                    GAMESTATEREF.child(`/connectedPlayers/${playerKey}/score`).set(playerScore - pointValue)
+                    GAMESTATEREF.child("/buzzes").remove()
 
                   }},
                   React.createElement("p", {className: "action-button-text"}, "Wrong"))
                 ,
                 React.createElement("div", {
                   className: "action-button",
+                  key: "reset",
                   onClick: (event) => {
                     GAMESTATEREF.child("/buzzes").remove()
                   }},

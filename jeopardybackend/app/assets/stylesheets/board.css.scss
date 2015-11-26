@@ -80,7 +80,7 @@ body { margin: 0; }
         }
 
         &.buzz {
-          background-color: red;
+          background-color: red !important;
         }
 
         .display {
@@ -440,6 +440,10 @@ body { margin: 0; }
 
       &.inactive {
         background-color: #999;
+      }
+
+      &.buzz {
+        background-color: red;
       }
 
       &.active {

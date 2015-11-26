@@ -15,7 +15,9 @@ $(function() {
 
       handleBuzz: function(event) {
         if(this.props.gameState.phase == "buzzers-active") {
-          this.throttledBuzzIn()
+          if(!this.props.gameState.buzzes) {
+            this.throttledBuzzIn()
+          }
         }
       },
 
@@ -24,7 +26,7 @@ $(function() {
         classNames += "buzzer "
         switch(this.props.gameState.phase) {
           case "buzzers-active":
-            classNames += "active "
+            this.props.gameState.buzzes ? classNames += "buzz " : classNames += "active ";
             break
           default:
             classNames += "inactive "
