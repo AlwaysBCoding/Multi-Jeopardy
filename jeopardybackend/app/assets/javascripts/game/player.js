@@ -32,9 +32,7 @@ $(function() {
             classNames += "inactive "
         }
 
-        return React.createElement("div", {className: classNames, onClick: this.handleBuzz},
-          React.createElement("p", {className: "buzzer-text"}, "BUZZER")
-        )
+        return React.createElement("div", {className: classNames, onClick: this.handleBuzz})
 
       }
 
