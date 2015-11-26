@@ -77,6 +77,7 @@ $(function() {
         var clueClasses = ""
         clueClasses += "clue "
         if(this.props.phase == "choose-question") { clueClasses += "available" }
+        if(this.props.phase == "buzzers-active") { clueClasses += "active" }
 
         switch(this.props.clue.status) {
           case "unopened":
@@ -85,7 +86,7 @@ $(function() {
               onClick: (event) => {
                 if(renderContext.props.phase == "choose-question") {
                   GAMESTATEREF.child(`${renderContext.props.round}Jeopardy/clues/${renderContext.props.clueKey}/status`).set("current")
-                  GAMESTATEREF.child("/activeClue").set(Object.assign(this.props.clue, {"status": "current"}))
+                  GAMESTATEREF.child("/activeClue").set(Object.assign(this.props.clue, {"status": "current", "clueKey": renderContext.props.clueKey}))
                   GAMESTATEREF.child("/phase").set("read-question")
                 }
               }
@@ -93,9 +94,15 @@ $(function() {
               React.createElement("p", {className: "point-value"}, `$${this.props.clue.pointValue}`)
             )
           case "current":
-            return React.createElement("div", {className: "clue"},
-              React.createElement("p", {className: "question-text"}, this.props.clue.questionText)
-            )
+            if(this.props.phase == "read-question") {
+              return React.createElement("div", {className: clueClasses},
+                React.createElement("p", {className: "question-text"}, this.props.clue.questionText)
+              )
+            } else if(this.props.phase == "buzzers-active") {
+              return React.createElement("div", {className: clueClasses},
+                React.createElement("p", {className: "question-text"}, this.props.clue.answerText)
+              )
+            }
           case "completed":
             return React.createElement("div", {className: "clue"},
               React.createElement("p", {className: "point-value"}, "")
@@ -320,6 +327,30 @@ $(function() {
                 break
             }
             break
+
+          case "read-question":
+            ActionButtonsContent = [
+              React.createElement("div", {
+                className: "action-button",
+                onClick: (event) => {
+                  GAMESTATEREF.child("/phase").set("buzzers-active")
+                }},
+                React.createElement("p", {className: "action-button-text"}, "Activate Buzzers")
+              )
+            ]
+            break
+          case "buzzers-active":
+            ActionButtonsContent = [
+              React.createElement("div", {
+                className: "action-button",
+                onClick: (event) => {
+                  GAMESTATEREF.child("/phase").set("choose-question")
+                  GAMESTATEREF.child(`/doubleJeopardy/clues/${renderContext.props.gameState.activeClue.clueKey}/status`).set("completed")
+                }},
+                React.createElement("p", {className: "action-button-text"}, "Back To Board")
+              )
+            ]
+            break
           default:
             return React.createElement("div", {className: "action-buttons"})
         }
@@ -382,8 +413,9 @@ $(function() {
           }
           break
         case "read-question":
+        case "buzzers-active":
           MainContent =
-          React.createElement(Clue, {clue: this.state.activeClue})
+          React.createElement(Clue, {clue: this.state.activeClue, phase: this.state.phase, round: this.state.round})
           break
         }
 

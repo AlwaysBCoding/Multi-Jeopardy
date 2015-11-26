@@ -4,6 +4,7 @@ class Game < ActiveRecord::Base
 
   before_create :generate_slug, :seed_clue_groups
   after_create :sync_to_firebase
+  after_destroy :remove_from_firebase
 
   def generate_slug
     self.slug = SecureRandom.base64(6).gsub(/[^0-9A-Za-z]/, "X")
@@ -139,6 +140,11 @@ class Game < ActiveRecord::Base
   def sync_to_firebase
     firebase = Firebase::Client.new("https://leighjeopardy.firebaseio.com")
     firebase.set("/games/#{self.slug}", self.generate_initial_gamestate)
+  end
+
+  def remove_from_firebase
+    firebase = Firebase::Client.new("https://leighjeopardy.firebaseio.com")
+    firebase.set("/games/#{self.slug}", nil)
   end
 
 end

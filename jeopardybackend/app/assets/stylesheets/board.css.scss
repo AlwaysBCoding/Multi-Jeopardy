@@ -178,6 +178,10 @@ body { margin: 0; }
     background-color: $jeopardy-blue;
     padding: 3rem;
 
+    &.active {
+      border: 2.5rem solid $swish-primary-text;
+    }
+
     p.question-text {
       font-family: "Korinna Bold";
       font-size: 4rem;
@@ -359,8 +363,71 @@ body { margin: 0; }
 
 // Player
 .games-player {
-  display: flex;
-  height: 100vh;
-  width: 100%;
-  background-color: $jeopardy-blue;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 88vh;
+    width: 100%;
+
+    .join-game-button {
+      cursor: pointer;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      background-color: $jeopardy-blue;
+
+      p {
+        font-size: 10rem;
+        color: $swish-primary-text;
+        font-weight: 600;
+        text-shadow: 4px 4px 3px #000;
+      }
+    }
+
+    .username {
+      height: 20%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $jeopardy-blue;
+
+      p.username-text {
+        font-size: 8rem;
+        color: $swish-primary-text;
+        font-weight: 600;
+        text-shadow: 4px 4px 3px #000;
+      }
+    }
+
+    .buzzer {
+      height: 80%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      p.buzzer-text {
+        font-size: 8rem;
+        color: $swish-primary-text;
+        font-weight: 600;
+        text-shadow: 4px 4px 3px #000;
+      }
+
+      &.inactive {
+        background-color: #999;
+      }
+
+      &.active {
+        cursor: pointer;
+        background-color: green;
+      }
+    }
+  }
+
 }
