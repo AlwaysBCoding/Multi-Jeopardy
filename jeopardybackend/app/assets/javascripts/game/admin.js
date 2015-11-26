@@ -313,6 +313,24 @@ $(function() {
             }
             break
 
+          case "choose-question":
+            if(this.props.gameState.round == "single") {
+              ActionButtonsContent = [
+                React.createElement("div", {
+                  className: "action-button",
+                  onClick: (event) => {
+                    GAMESTATEREF.child("/round").set("double")
+                    GAMESTATEREF.child("/phase").set("reveal-categories")
+                  }},
+                  React.createElement("p", {className: "action-button-text"}, "Start Double Jeopardy"))
+              ]
+              break
+            } else {
+              ActionButtonsContent = [
+
+              ]
+              break
+            }
           case "read-question":
             ActionButtonsContent = [
               React.createElement("div", {
