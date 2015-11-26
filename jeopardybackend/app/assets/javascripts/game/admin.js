@@ -36,7 +36,7 @@ $(function() {
         return React.createElement("div", {className: playerClasses},
           React.createElement("p", {className: "display"}, this.props.player.username),
           React.createElement("div", {className: "flex-divider"}),
-          React.createElement("p", {className: "score"}, this.props.player.score)
+          React.createElement("p", {className: "score"}, accounting.formatMoney(this.props.player.score, "$", 0))
         )
       }
     })
