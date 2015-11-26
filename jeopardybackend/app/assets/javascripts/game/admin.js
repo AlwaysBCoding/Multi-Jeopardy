@@ -67,7 +67,9 @@ $(function() {
         var clueClasses = ""
         clueClasses += "clue "
         if(this.props.phase == "choose-question") { clueClasses += "available" }
-        if(this.props.phase == "buzzers-active") { clueClasses += "active" }
+        if(this.props.phase == "buzzers-active") {
+          this.props.buzzes ? clueClasses += "buzz " : clueClasses += "active" ;
+        }
 
         switch(this.props.clue.status) {
           case "unopened":
@@ -85,11 +87,10 @@ $(function() {
             )
           case "current":
             return React.createElement("div", {className: clueClasses},
-              React.createElement("p", {className: "question-text"}, this.props.clue.questionText)
+              React.createElement("p", {className: "question-text"}, this.props.clue.questionText),
+              React.createElement("hr", {}),
+              React.createElement("p", {className: "question-text"}, this.props.clue.answerText)
             )
-            // return React.createElement("div", {className: clueClasses},
-            //   React.createElement("p", {className: "question-text"}, this.props.clue.answerText)
-            // )
           case "completed":
             return React.createElement("div", {className: "clue"},
               React.createElement("p", {className: "point-value"}, "")
@@ -324,17 +325,43 @@ $(function() {
             ]
             break
           case "buzzers-active":
-            ActionButtonsContent = [
-              React.createElement("div", {
-                className: "action-button",
-                onClick: (event) => {
-                  GAMESTATEREF.child("/phase").set("choose-question")
-                  GAMESTATEREF.child(`/singleJeopardy/clues/${renderContext.props.gameState.activeClue.clueKey}/status`).set("completed")
-                }},
-                React.createElement("p", {className: "action-button-text"}, "Back To Board")
-              )
-            ]
-            break
+            if(this.props.gameState.buzzes) {
+              ActionButtonsContent = [
+                React.createElement("div", {
+                  className: "action-button",
+                  onClick: (event) => {
+
+                  }},
+                  React.createElement("p", {className: "action-button-text"}, "Correct"))
+                ,
+                React.createElement("div", {
+                  className: "action-button",
+                  onClick: (event) => {
+
+                  }},
+                  React.createElement("p", {className: "action-button-text"}, "Wrong"))
+                ,
+                React.createElement("div", {
+                  className: "action-button",
+                  onClick: (event) => {
+                    GAMESTATEREF.child("/buzzes").remove()
+                  }},
+                  React.createElement("p", {className: "action-button-text"}, "Reset"))
+              ]
+              break
+            } else {
+              ActionButtonsContent = [
+                React.createElement("div", {
+                  className: "action-button",
+                  onClick: (event) => {
+                    GAMESTATEREF.child("/phase").set("choose-question")
+                    GAMESTATEREF.child(`/${renderContext.props.gameState.round}Jeopardy/clues/${renderContext.props.gameState.activeClue.clueKey}/status`).set("completed")
+                  }},
+                  React.createElement("p", {className: "action-button-text"}, "Back To Board")
+                )
+              ]
+              break
+            }
           default:
             return React.createElement("div", {className: "action-buttons"})
         }
@@ -355,7 +382,9 @@ $(function() {
 
       componentWillMount: function() {
         renderContext = this
-        GAMESTATEREF.on("value", (snapshot) => { renderContext.setState(snapshot.val()) })
+        GAMESTATEREF.on("value", (snap) => {
+          renderContext.replaceState(snap.val())
+        })
       },
 
       render: function() {
@@ -399,7 +428,7 @@ $(function() {
         case "read-question":
         case "buzzers-active":
           MainContent =
-          React.createElement(Clue, {clue: this.state.activeClue, phase: this.state.phase, round: this.state.round})
+          React.createElement(Clue, {clue: this.state.activeClue, phase: this.state.phase, round: this.state.round, buzzes: this.state.buzzes})
           break
         }
 

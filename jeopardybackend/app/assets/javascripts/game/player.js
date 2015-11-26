@@ -42,7 +42,7 @@ $(function() {
 
       componentWillMount: function() {
         var renderContext = this
-        GAMESTATEREF.on("value", function(snapshot) { renderContext.setState(snapshot.val()) })
+        GAMESTATEREF.on("value", function(snapshot) { renderContext.replaceState(snapshot.val()) })
       },
 
       render: function() {
