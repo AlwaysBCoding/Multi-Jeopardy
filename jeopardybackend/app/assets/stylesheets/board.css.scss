@@ -490,13 +490,16 @@ body { margin: 0; }
       width: 100%;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
 
-      p.buzzer-text {
-        font-size: 8rem;
+      .buzzes {
+        margin-top: 1rem;
+      }
+
+      p.buzz {
+        font-size: 5rem;
         color: $swish-primary-text;
         font-weight: 600;
-        text-shadow: 4px 4px 3px #000;
       }
 
       &.inactive {

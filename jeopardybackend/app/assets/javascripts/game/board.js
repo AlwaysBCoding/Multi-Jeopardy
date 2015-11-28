@@ -47,9 +47,7 @@ $(function() {
         switch(this.props.category.status) {
           case "revealed":
             return React.createElement("div", {className: "category"},
-              React.createElement("p", {className: "category-text"}, this.props.category.text),
-              React.createElement("p", {className: "category-comment"}, this.props.category.comments)
-            )
+              React.createElement("p", {className: "category-text"}, this.props.category.text))
           case "unrevealed":
           case "completed":
             return React.createElement("div", {className: "category"},

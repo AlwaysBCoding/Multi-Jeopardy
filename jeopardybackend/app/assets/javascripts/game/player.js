@@ -10,7 +10,7 @@ $(function() {
       },
 
       buzzIn: function() {
-        GAMESTATEREF.child("/buzzes").push({playerKey: this.props.playerKey})
+        GAMESTATEREF.child("/buzzes").push({playerKey: this.props.playerKey, username: this.props.username, timestamp: Date.now() })
       },
 
       handleBuzz: function(event) {
@@ -22,6 +22,8 @@ $(function() {
       },
 
       render: function() {
+        var renderContext = this
+
         var classNames = ""
         classNames += "buzzer "
         switch(this.props.gameState.phase) {
@@ -32,7 +34,15 @@ $(function() {
             classNames += "inactive "
         }
 
-        return React.createElement("div", {className: classNames, onClick: this.handleBuzz})
+        var BuzzTimes = _.map(this.props.gameState.buzzes, function(buzz) {
+          return React.createElement("p", {className: "buzz"}, `${buzz.username} - ${buzz.timestamp - renderContext.props.gameState.buzzersActiveAt}`)
+        })
+
+        return React.createElement("div", {className: classNames, onClick: this.handleBuzz},
+          React.createElement("div", {className: "buzz-times"},
+            BuzzTimes
+          )
+        )
 
       }
 
@@ -56,7 +66,7 @@ $(function() {
             React.createElement("p", {className: "username-text"}, this.username)
           )
           SecondaryContent =
-          React.createElement(Buzzer, {gameState: this.state, playerKey: this.userRef.key()})
+          React.createElement(Buzzer, {gameState: this.state, playerKey: this.userRef.key(), username: this.username})
         } else {
           MainContent =
           React.createElement("div", {

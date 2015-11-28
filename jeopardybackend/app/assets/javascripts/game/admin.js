@@ -336,6 +336,7 @@ $(function() {
               React.createElement("div", {
                 className: "action-button",
                 onClick: (event) => {
+                  GAMESTATEREF.child("/buzzersActiveAt").set(Date.now())
                   GAMESTATEREF.child("/phase").set("buzzers-active")
                 }},
                 React.createElement("p", {className: "action-button-text"}, "Activate Buzzers")
